@@ -6,6 +6,14 @@
   <title>Menu99 | Operating System for Food Businesses</title>
   <link rel="icon" type="image/png" href="menu99_transparent.png">
   
+  <!-- Clean URL script -->
+  <script>
+    if (window.location.pathname.endsWith('.html')) {
+      const cleanPath = window.location.pathname.replace(/\.html$/, '');
+      window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+    }
+  </script>
+  
   <!-- Google Fonts: Plus Jakarta Sans & Fraunces -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -86,7 +94,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
       
       <!-- Brand Logo -->
-      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+      <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
         <img src="menu99_transparent.png" alt="Menu99" class="h-8 sm:h-10 w-auto object-contain transition-transform group-hover:scale-105">
         <div class="flex flex-col">
           <span class="text-white font-bold text-base sm:text-lg leading-tight tracking-tight">Menu99</span>
@@ -99,7 +107,7 @@
         <a href="#merchant-selection" class="hidden sm:inline-flex text-xs sm:text-sm font-semibold text-brand-orange hover:text-brand-orangeHover transition">
           Choose Profile ↓
         </a>
-        <a href="index.html" class="text-xs sm:text-sm font-medium text-white/70 hover:text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 hover:border-white/25 transition flex items-center gap-1.5">
+        <a href="/" class="text-xs sm:text-sm font-medium text-white/70 hover:text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 hover:border-white/25 transition flex items-center gap-1.5">
           ← Back to Website
         </a>
       </div>
@@ -628,9 +636,9 @@
         <div class="md:col-span-3 space-y-2.5">
           <span class="text-xs font-bold text-white uppercase tracking-wider block">Quick Links</span>
           <ul class="space-y-2 text-xs text-white/70">
-            <li><a href="index.html" class="hover:text-white transition">Main Website</a></li>
+            <li><a href="/" class="hover:text-white transition">Main Website</a></li>
             <li><a href="#merchant-selection" class="hover:text-white transition">Select Merchant Profile</a></li>
-            <li><a href="merchant-street.html" class="hover:text-white transition">Merchant Demo Dashboard</a></li>
+            <li><a href="/merchant-street" class="hover:text-white transition">Merchant Demo Dashboard</a></li>
           </ul>
         </div>
 
@@ -643,13 +651,13 @@
         </div>
         
         <div class="flex items-center gap-4 sm:gap-6 flex-wrap justify-center">
-          <a href="privacy.html" class="hover:text-white transition">
+          <a href="/privacy" class="hover:text-white transition">
             Privacy Policy
           </a>
-          <a href="terms.html" class="hover:text-white transition">
+          <a href="/terms" class="hover:text-white transition">
             Terms of Service
           </a>
-          <a href="refund.html" class="hover:text-white transition">
+          <a href="/refund" class="hover:text-white transition">
             Refund Policy
           </a>
           <a href="mailto:info@menu99.in" class="hover:text-white transition">
@@ -965,7 +973,7 @@
 
           <div class="flex items-center gap-2">
             <input type="checkbox" id="reg-street-terms" required checked class="w-4 h-4 rounded accent-brand-orange bg-brand-dark border-brand-border">
-            <label for="reg-street-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="terms.html" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="privacy.html" target="_blank" class="text-brand-orange underline">Privacy Policy</a></label>
+            <label for="reg-street-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="/terms" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="/privacy" target="_blank" class="text-brand-orange underline">Privacy Policy</a></label>
           </div>
 
           <button type="submit" class="w-full h-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-orange/30 transition-all active:scale-95 flex items-center justify-center gap-2 mt-2">
@@ -1091,7 +1099,7 @@
 
           <div class="flex items-center gap-2">
             <input type="checkbox" id="reg-cafe-terms" required checked class="w-4 h-4 rounded accent-brand-orange bg-brand-dark border-brand-border">
-            <label for="reg-cafe-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="terms.html" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="privacy.html" target="_blank" class="text-brand-orange underline">Privacy Policy</a></label>
+            <label for="reg-cafe-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="/terms" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="/privacy" target="_blank" class="text-brand-orange underline">Privacy Policy</a></label>
           </div>
 
           <button type="submit" class="w-full h-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-orange/30 transition-all active:scale-95 flex items-center justify-center gap-2 mt-2">
@@ -1202,7 +1210,7 @@
 
           <div class="flex items-center gap-2">
             <input type="checkbox" id="reg-cloud-terms" required checked class="w-4 h-4 rounded accent-brand-orange bg-brand-dark border-brand-border">
-            <label for="reg-cloud-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="terms.html" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="privacy.html" target="_blank" class="text-brand-orange underline">Cloud OS Policy</a></label>
+            <label for="reg-cloud-terms" class="text-xs text-white/70 select-none cursor-pointer">I agree to <a href="/terms" target="_blank" class="text-brand-orange underline">Menu99 Terms of Service</a> & <a href="/privacy" target="_blank" class="text-brand-orange underline">Cloud OS Policy</a></label>
           </div>
 
           <button type="submit" class="w-full h-12 rounded-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold text-xs sm:text-sm shadow-lg shadow-brand-orange/30 transition-all active:scale-95 flex items-center justify-center gap-2 mt-2">
@@ -1575,12 +1583,12 @@
 
     function redirectToDashboard(type) {
       if (type === 'street') {
-        window.location.href = 'merchant-street.html';
+        window.location.href = '/merchant-street';
       } else if (type === 'cafe') {
-        window.location.href = 'merchant-cafe.html';
+        window.location.href = '/merchant-cafe';
       } else {
         alert(`Registration successful! Launching ${type.toUpperCase()} dashboard...`);
-        window.location.href = 'merchant-street.html';
+        window.location.href = '/merchant-street';
       }
     }
 
