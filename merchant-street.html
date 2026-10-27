@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Menu99 | Street Express - Merchant Panel</title>
+  <link rel="icon" type="image/png" href="menu99_transparent.png">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              orange: '#FF6B00',
+              orangeHover: '#E55F00',
+              cream: '#FFF8F0',
+              dark: '#0E0E12',
+              surface: '#17171C',
+              surfaceHover: '#202028',
+              border: '#282832'
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100%;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #0E0E12;
+      color: #F5F5F7;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-serif {
+      font-family: 'Fraunces', serif;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .token-pulse {
+      animation: pulse-ring 2s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-brand-dark selection:bg-brand-orange selection:text-white">
+
+  <!-- TOP HEADER (Phone to Laptop Responsive) -->
+  <header class="sticky top-0 z-40 border-b border-brand-border bg-brand-dark/95 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
+      
+      <!-- Brand & Profile Info -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <a href="merchant.html" title="Back to Profile Selection" class="shrink-0 flex items-center gap-2 group">
+          <img src="menu99_transparent.png" alt="Menu99" class="h-8 sm:h-9 w-auto object-contain">
+          <div class="hidden xs:flex flex-col">
+            <span class="text-white font-bold text-sm sm:text-base leading-none">Menu99</span>
+            <span id="header-outlet-name" class="text-[10px] text-brand-orange font-semibold tracking-wide uppercase mt-0.5 truncate max-w-[150px]">Street Express</span>
+          </div>
+        </a>
+
+        <div class="h-5 w-[1px] bg-brand-border mx-0.5 hidden xs:block"></div>
+
+        <!-- Mode Badge with Clean SVG Icon -->
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <span>Street Food & Cart Mode</span>
+        </div>
+      </div>
+
+      <!-- Header Right: Switch Type & Quick Stats -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Live Token Counter Badge -->
+        <button onclick="switchTab('tokens')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-surface border border-brand-border hover:border-brand-orange/40 text-xs font-semibold text-white transition">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Active:</span>
+          <span id="header-active-tokens" class="text-brand-orange font-bold">0</span>
+        </button>
+
+        <!-- Switch Merchant Profile -->
+        <a href="merchant.html" class="text-xs font-medium text-white/60 hover:text-white px-2.5 py-1.5 rounded-lg border border-transparent hover:border-brand-border transition">
+          Switch Profile
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS (Desktop / Laptop) -->
+  <nav class="bg-brand-surface/80 border-b border-brand-border sticky top-16 z-30 backdrop-blur-md hidden md:block">
+    <div class="max-w-7xl mx-auto px-6 flex items-center gap-1 h-12">
+      <button onclick="switchTab('pos')" id="tab-btn-pos" class="tab-button px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-brand-orange text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <span>Quick Counter POS</span>
+      </button>
+      <button onclick="switchTab('tokens')" id="tab-btn-tokens" class="tab-button px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-white/70 hover:text-white hover:bg-white/5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+        <span>Live Tokens & Queue</span>
+        <span id="tab-token-count" class="px-1.5 py-0.2 rounded-full bg-brand-orange text-white text-[10px]">0</span>
+      </button>
+      <button onclick="switchTab('hisab')" id="tab-btn-hisab" class="tab-button px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-white/70 hover:text-white hover:bg-white/5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Today's Sales (Aaj Ka Hisab)</span>
+      </button>
+      <button onclick="switchTab('menu')" id="tab-btn-menu" class="tab-button px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-white/70 hover:text-white hover:bg-white/5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg>
+        <span>Stock & Item Toggle</span>
+      </button>
+      <button onclick="switchTab('qr')" id="tab-btn-qr" class="tab-button px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 text-white/70 hover:text-white hover:bg-white/5">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Counter QR Code</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-3 sm:p-6 pb-24 md:pb-8">
+
+    <!-- ======================================================== -->
+    <!-- TAB 1: QUICK COUNTER POS (1-Tap Punching & Billing)      -->
+    <!-- ======================================================== -->
+    <div id="view-pos" class="tab-view block">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        
+        <!-- Left Column: Menu Items & Category Filter (8 Cols on Desktop) -->
+        <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
+          
+          <!-- Category Filter Bar (Horizontally Scrollable) -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <button onclick="filterCategory('all')" class="cat-pill active-cat px-3.5 py-1.5 rounded-full text-xs font-bold bg-brand-orange text-white shrink-0 transition" data-cat="all">
+              All Items
+            </button>
+            <button onclick="filterCategory('veg')" class="cat-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition flex items-center gap-1.5" data-cat="veg">
+              <span class="inline-flex items-center justify-center w-3 h-3 border border-emerald-500 bg-emerald-950/40 rounded-[2px] p-[1.5px]"><span class="w-1 h-1 rounded-full bg-emerald-500"></span></span>
+              <span>Veg Only</span>
+            </button>
+            <button onclick="filterCategory('nonveg')" class="cat-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition flex items-center gap-1.5" data-cat="nonveg">
+              <span class="inline-flex items-center justify-center w-3 h-3 border border-red-500 bg-red-950/40 rounded-[2px] p-[1.5px]"><span class="w-1 h-1 rounded-full bg-red-500"></span></span>
+              <span>Non-Veg</span>
+            </button>
+            <button onclick="filterCategory('chai')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition" data-cat="chai">
+              Chai & Drinks
+            </button>
+            <button onclick="filterCategory('snacks')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition" data-cat="snacks">
+              Quick Snacks
+            </button>
+            <button onclick="filterCategory('fastfood')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition" data-cat="fastfood">
+              Fast Bites & Rolls
+            </button>
+            <button onclick="filterCategory('combos')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-brand-surface hover:bg-brand-surfaceHover text-white/80 shrink-0 border border-brand-border transition" data-cat="combos">
+              Combos
+            </button>
+          </div>
+
+          <!-- Items Grid with Real Food Photography Images -->
+          <div id="pos-items-grid" class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+        </div>
+
+        <!-- Right Column: Cart / Active Order & Instant Token Punch (4-5 Cols on Desktop) -->
+        <div class="lg:col-span-5 xl:col-span-4 sticky top-20">
+          <div class="bg-brand-surface border border-brand-border rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-2xl flex flex-col justify-between">
+            
+            <!-- Cart Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+              <div class="flex items-center gap-2">
+                <span class="text-base sm:text-lg font-bold text-white">Current Order</span>
+                <span id="cart-item-count" class="px-2 py-0.5 rounded-full bg-brand-orange/20 text-brand-orange text-xs font-bold">0 items</span>
+              </div>
+              <button onclick="clearCart()" class="text-xs text-white/40 hover:text-red-400 font-medium transition">
+                Clear All
+              </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="my-3 space-y-2 max-h-56 sm:max-h-72 overflow-y-auto pr-1 no-scrollbar min-h-[140px]">
+              <div class="h-32 flex flex-col items-center justify-center text-center text-white/40">
+                <svg class="w-8 h-8 mb-2 text-white/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                <p class="text-xs font-semibold">No items selected.</p>
+                <p class="text-[11px] text-white/30">Tap any food item to start billing</p>
+              </div>
+            </div>
+
+            <!-- Bill Summary & Payment Selection -->
+            <div class="pt-3 border-t border-brand-border space-y-3">
+              
+              <!-- Total Amount -->
+              <div class="flex items-baseline justify-between">
+                <span class="text-xs text-white/60 font-medium uppercase tracking-wider">Total Bill</span>
+                <div class="text-right">
+                  <span class="text-2xl sm:text-3xl font-extrabold text-white">₹<span id="cart-total-amount">0</span></span>
+                </div>
+              </div>
+
+              <!-- Payment Method Toggle (Cash vs UPI) -->
+              <div>
+                <label class="text-[11px] text-white/50 font-semibold uppercase tracking-wider block mb-1.5">Payment Mode</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <button type="button" onclick="setPaymentMode('upi')" id="pay-mode-upi" class="h-10 rounded-xl border-2 border-brand-orange bg-brand-orange/15 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                    <span>UPI QR</span>
+                  </button>
+                  <button type="button" onclick="setPaymentMode('cash')" id="pay-mode-cash" class="h-10 rounded-xl border-2 border-white/10 bg-white/5 text-white/70 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span>Cash</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Customer Note / Customization -->
+              <div class="flex items-center gap-2">
+                <input 
+                  type="text" 
+                  id="order-customer-note" 
+                  placeholder="Customer note (e.g. Less Sugar, Extra Spicy)" 
+                  class="w-full h-9 rounded-xl bg-brand-dark border border-brand-border px-3 text-xs text-white placeholder-white/30 focus:border-brand-orange outline-none transition"
+                >
+              </div>
+
+              <!-- Instant Punch & Generate Token Button -->
+              <button 
+                id="btn-punch-order" 
+                disabled 
+                onclick="punchOrder()"
+                class="w-full h-13 py-3 rounded-2xl bg-brand-orange text-white font-bold text-sm sm:text-base shadow-lg shadow-brand-orange/30 transition-all opacity-40 cursor-not-allowed hover:bg-brand-orangeHover active:scale-98 flex items-center justify-center gap-2"
+              >
+                <span>Punch & Generate Token</span>
+                <span>→</span>
+              </button>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 2: LIVE TOKENS & QUEUE (Token Call & Status)         -->
+    <!-- ======================================================== -->
+    <div id="view-tokens" class="tab-view hidden">
+      <div class="space-y-6">
+        
+        <!-- Live Tokens Header Banner -->
+        <div class="bg-brand-surface rounded-2xl sm:rounded-3xl p-5 border border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold font-serif text-white flex items-center gap-2">
+              <span>Live Token Board</span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            </h2>
+            <p class="text-xs sm:text-sm text-white/60 mt-1">
+              Call customer token numbers when snacks or tea are ready.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="clearCompletedTokens()" class="text-xs text-white/50 hover:text-white px-3 py-1.5 rounded-lg border border-brand-border transition">
+              Clear Completed
+            </button>
+            <button onclick="switchTab('pos')" class="px-4 py-2 rounded-xl bg-brand-orange text-white font-bold text-xs flex items-center gap-1.5 hover:bg-brand-orangeHover transition">
+              <span>+ Punch New Order</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Token Sections Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          
+          <!-- Column 1: Preparing -->
+          <div class="bg-brand-surface/70 rounded-2xl border border-brand-border p-4 flex flex-col gap-3">
+            <div class="flex items-center justify-between border-b border-brand-border pb-2.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span>Preparing Now</span>
+                <span id="count-preparing" class="px-1.5 py-0.2 rounded-full bg-amber-400/20 text-amber-300 text-[10px]">0</span>
+              </span>
+            </div>
+            <div id="list-preparing" class="space-y-2.5 min-h-[200px]"></div>
+          </div>
+
+          <!-- Column 2: Ready for Pickup -->
+          <div class="bg-brand-surface/70 rounded-2xl border border-brand-border p-4 flex flex-col gap-3">
+            <div class="flex items-center justify-between border-b border-brand-border pb-2.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                <span>Ready to Serve</span>
+                <span id="count-ready" class="px-1.5 py-0.2 rounded-full bg-emerald-400/20 text-emerald-300 text-[10px]">0</span>
+              </span>
+            </div>
+            <div id="list-ready" class="space-y-2.5 min-h-[200px]"></div>
+          </div>
+
+          <!-- Column 3: Completed / Served -->
+          <div class="bg-brand-surface/70 rounded-2xl border border-brand-border p-4 flex flex-col gap-3">
+            <div class="flex items-center justify-between border-b border-brand-border pb-2.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-white/50 flex items-center gap-1.5">
+                <span>Completed & Served</span>
+                <span id="count-completed" class="px-1.5 py-0.2 rounded-full bg-white/10 text-white/60 text-[10px]">0</span>
+              </span>
+            </div>
+            <div id="list-completed" class="space-y-2.5 min-h-[200px]"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 3: TODAY'S SALES & HISAB (Aaj Ka Hisab)              -->
+    <!-- ======================================================== -->
+    <div id="view-hisab" class="tab-view hidden">
+      <div class="space-y-6">
+        
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
+          <div class="bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-wider">Today's Total Sale</span>
+            <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-white">
+              ₹<span id="hisab-total-sale">0</span>
+            </div>
+            <span class="text-[11px] text-emerald-400 mt-1 inline-block">● Real-time calculations</span>
+          </div>
+
+          <div class="bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-wider">UPI / QR Payment</span>
+            <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-brand-orange">
+              ₹<span id="hisab-upi-sale">0</span>
+            </div>
+            <span class="text-[11px] text-white/40 mt-1 inline-block" id="hisab-upi-orders">0 transactions</span>
+          </div>
+
+          <div class="bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-wider">Cash in Counter</span>
+            <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-emerald-400">
+              ₹<span id="hisab-cash-sale">0</span>
+            </div>
+            <span class="text-[11px] text-white/40 mt-1 inline-block" id="hisab-cash-orders">0 transactions</span>
+          </div>
+
+          <div class="bg-brand-surface border border-brand-border rounded-2xl p-4 sm:p-5">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-wider">Total Tokens Served</span>
+            <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-white">
+              <span id="hisab-total-tokens">0</span>
+            </div>
+            <span class="text-[11px] text-white/40 mt-1 inline-block">Today's total volume</span>
+          </div>
+        </div>
+
+        <!-- Order Log Table -->
+        <div class="bg-brand-surface rounded-2xl sm:rounded-3xl border border-brand-border p-4 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base sm:text-lg font-bold text-white">Today's Order Transactions</h3>
+            <span class="text-xs text-white/40" id="hisab-timestamp">Today</span>
+          </div>
+
+          <div class="overflow-x-auto no-scrollbar">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="text-white/40 border-b border-brand-border text-[11px] uppercase tracking-wider">
+                <tr>
+                  <th class="pb-2.5 font-semibold">Token</th>
+                  <th class="pb-2.5 font-semibold">Time</th>
+                  <th class="pb-2.5 font-semibold">Items</th>
+                  <th class="pb-2.5 font-semibold">Mode</th>
+                  <th class="pb-2.5 font-semibold text-right">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="hisab-orders-table" class="divide-y divide-brand-border text-white/80"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 4: QUICK STOCK & MENU TOGGLE                         -->
+    <!-- ======================================================== -->
+    <div id="view-menu" class="tab-view hidden">
+      <div class="bg-brand-surface rounded-2xl sm:rounded-3xl border border-brand-border p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+          <div>
+            <h3 class="text-lg sm:text-xl font-bold font-serif text-white">Quick Menu & Stock Toggle</h3>
+            <p class="text-xs text-white/50 mt-0.5">One-click enable/disable items when they run out of stock.</p>
+          </div>
+          <button onclick="addNewCustomItemModal()" class="px-4 py-2 rounded-full bg-brand-orange text-white font-bold text-xs hover:bg-brand-orangeHover transition self-start sm:self-auto flex items-center gap-1.5">
+            <span>+ Add New Street Item</span>
+          </button>
+        </div>
+
+        <div id="stock-items-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- TAB 5: COUNTER QR CODE                                   -->
+    <!-- ======================================================== -->
+    <div id="view-qr" class="tab-view hidden">
+      <div class="max-w-xl mx-auto bg-brand-surface rounded-3xl border border-brand-border p-6 sm:p-8 text-center">
+        <span id="qr-badge-name" class="text-xs font-bold uppercase tracking-wider text-brand-orange bg-brand-orange/15 px-3 py-1 rounded-full border border-brand-orange/30">
+          Street Express • Self-Service QR
+        </span>
+
+        <h3 id="qr-standee-name" class="text-2xl font-bold font-serif text-white mt-4">
+          Stall Counter QR Code
+        </h3>
+        <p class="text-xs sm:text-sm text-white/60 mt-1 max-w-sm mx-auto">
+          Print or display this at your counter for customers to view the digital menu and pay instantly.
+        </p>
+
+        <div class="mt-6 p-6 bg-white rounded-3xl inline-block shadow-2xl border-4 border-brand-orange/30">
+          <svg class="w-48 h-48 sm:w-56 sm:h-56 mx-auto text-black" viewBox="0 0 100 100" fill="currentColor">
+            <rect x="0" y="0" width="100" height="100" fill="white" />
+            <path d="M10 10h25v25h-25z M15 15h15v15h-15z M18 18h9v9h-9z" fill="black"/>
+            <path d="M65 10h25v25h-25z M70 15h15v15h-15z M73 18h9v9h-9z" fill="black"/>
+            <path d="M10 65h25v25h-25z M15 70h15v15h-15z M18 73h9v9h-9z" fill="black"/>
+            <rect x="42" y="15" width="6" height="6" fill="black"/>
+            <rect x="52" y="22" width="6" height="6" fill="black"/>
+            <rect x="42" y="32" width="16" height="6" fill="black"/>
+            <rect x="20" y="42" width="6" height="16" fill="black"/>
+            <rect x="35" y="45" width="8" height="8" fill="black"/>
+            <rect x="50" y="42" width="6" height="12" fill="black"/>
+            <rect x="65" y="45" width="12" height="6" fill="black"/>
+            <rect x="80" y="40" width="6" height="14" fill="black"/>
+            <rect x="45" y="65" width="15" height="6" fill="black"/>
+            <rect x="68" y="68" width="8" height="18" fill="black"/>
+            <rect x="82" y="70" width="6" height="12" fill="black"/>
+            <rect x="40" y="80" width="18" height="6" fill="black"/>
+          </svg>
+          <div id="qr-footer-upi" class="mt-2 text-xs font-bold text-black tracking-widest uppercase">
+            Scan for Menu & Pay
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <button onclick="window.print()" class="px-6 py-2.5 rounded-full bg-brand-orange text-white font-bold text-xs hover:bg-brand-orangeHover transition flex items-center gap-2">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            <span>Print Counter Standee</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM MOBILE STICKY NAVIGATION BAR -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 bg-brand-dark/95 border-t border-brand-border backdrop-blur-xl md:hidden px-2 py-1.5 flex items-center justify-around">
+    <button onclick="switchTab('pos')" id="m-tab-pos" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-brand-orange py-1 px-3">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span class="text-[10px] font-bold">POS</span>
+    </button>
+    <button onclick="switchTab('tokens')" id="m-tab-tokens" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-white/50 py-1 px-3 relative">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/></svg>
+      <span class="text-[10px] font-bold">Tokens</span>
+      <span id="m-token-badge" class="absolute top-0 right-1 w-2 h-2 rounded-full bg-brand-orange hidden"></span>
+    </button>
+    <button onclick="switchTab('hisab')" id="m-tab-hisab" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-white/50 py-1 px-3">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span class="text-[10px] font-bold">Hisab</span>
+    </button>
+    <button onclick="switchTab('menu')" id="m-tab-menu" class="mobile-nav-btn flex flex-col items-center gap-0.5 text-white/50 py-1 px-3">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/></svg>
+      <span class="text-[10px] font-bold">Stock</span>
+    </button>
+  </div>
+
+  <!-- SUCCESS TOKEN POPUP MODAL -->
+  <div id="token-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="bg-brand-surface border-2 border-brand-orange rounded-3xl p-6 sm:p-8 max-w-sm w-full text-center shadow-2xl relative">
+      <div class="w-12 h-12 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center mx-auto mb-3">
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h4 class="text-lg font-bold text-white">Order Punched Successfully!</h4>
+      <p class="text-xs text-white/60 mt-0.5">Hand over this token number to customer</p>
+
+      <div class="my-5 py-4 bg-brand-dark rounded-2xl border border-brand-border">
+        <span class="text-xs uppercase tracking-wider text-white/40 font-semibold block">Customer Token</span>
+        <span id="modal-token-num" class="text-5xl font-black text-brand-orange mt-1 block">#101</span>
+      </div>
+
+      <div class="text-xs text-white/80 space-y-1 mb-5 text-left bg-white/5 p-3 rounded-xl border border-white/5">
+        <div class="flex justify-between"><span>Payment Mode:</span> <strong id="modal-pay-mode" class="text-white">UPI</strong></div>
+        <div class="flex justify-between"><span>Total Amount:</span> <strong id="modal-total-amt" class="text-brand-orange font-bold">₹0</strong></div>
+      </div>
+
+      <button onclick="closeTokenModal()" class="w-full h-12 rounded-full bg-brand-orange text-white font-bold text-sm hover:bg-brand-orangeHover transition active:scale-95">
+        Next Customer (Clear) →
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC WITH PROFESSIONAL FOOD IMAGES -->
+  <script>
+    function playBeep(frequency = 880, duration = 0.15) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    // Default Street Food Menu Data with Real High-Res Photography Images
+    const DEFAULT_ITEMS = [
+      { 
+        id: 'item_1', 
+        name: 'Special Masala Chai', 
+        category: 'chai', 
+        price: 15, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_2', 
+        name: 'Kadak Ginger Tea', 
+        category: 'chai', 
+        price: 20, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_3', 
+        name: 'Maskabun Butter', 
+        category: 'chai', 
+        price: 35, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1589367920969-ab8e050bbb04?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_4', 
+        name: 'Hot Crispy Samosa (2 Pcs)', 
+        category: 'snacks', 
+        price: 30, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_5', 
+        name: 'Mumbai Vada Pav', 
+        category: 'snacks', 
+        price: 25, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_6', 
+        name: 'Cheese Burst Vada Pav', 
+        category: 'snacks', 
+        price: 40, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_7', 
+        name: 'Golden Aloo Puff', 
+        category: 'snacks', 
+        price: 25, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_8', 
+        name: 'Cheese Garlic Toast', 
+        category: 'fastfood', 
+        price: 70, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_9', 
+        name: 'Classic Veg Maggi', 
+        category: 'fastfood', 
+        price: 45, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_10', 
+        name: 'Cheese Tadka Maggi', 
+        category: 'fastfood', 
+        price: 65, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_11', 
+        name: 'Paneer Frankie Roll', 
+        category: 'fastfood', 
+        price: 80, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_12', 
+        name: 'Egg Bhurji Pav', 
+        category: 'snacks', 
+        price: 55, 
+        isVeg: false,
+        image: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_13', 
+        name: 'Chicken Frankie Roll', 
+        category: 'fastfood', 
+        price: 90, 
+        isVeg: false,
+        image: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_14', 
+        name: 'Chai + Maskabun Combo', 
+        category: 'combos', 
+        price: 45, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1561047029-3000c68339ca?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      },
+      { 
+        id: 'item_15', 
+        name: 'Vada Pav + Chai Combo', 
+        category: 'combos', 
+        price: 35, 
+        isVeg: true,
+        image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=400&q=80', 
+        inStock: true 
+      }
+    ];
+
+    // Standard Indian FSSAI Veg / Non-Veg Indicator Icon
+    function getDietBadge(isVeg) {
+      if (isVeg === false) {
+        return `
+          <span class="inline-flex items-center justify-center w-3.5 h-3.5 border border-red-500 bg-[#1A0808] rounded-[3px] p-[1.5px] shrink-0" title="Non-Vegetarian">
+            <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+          </span>
+        `;
+      }
+      return `
+        <span class="inline-flex items-center justify-center w-3.5 h-3.5 border border-emerald-500 bg-[#081A0E] rounded-[3px] p-[1.5px] shrink-0" title="Pure Vegetarian">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        </span>
+      `;
+    }
+
+    // Always ensure fresh images and isVeg indicators (Version 3)
+    const STREET_ITEMS_STORAGE_KEY = 'menu99_street_items_v3';
+    let rawStored = localStorage.getItem(STREET_ITEMS_STORAGE_KEY);
+    let streetItems = rawStored ? JSON.parse(rawStored) : DEFAULT_ITEMS;
+
+    // Synchronize fresh images and isVeg attributes
+    streetItems = streetItems.map(item => {
+      const defaultMatch = DEFAULT_ITEMS.find(d => d.id === item.id);
+      if (defaultMatch) {
+        return {
+          ...item,
+          image: defaultMatch.image,
+          isVeg: defaultMatch.isVeg
+        };
+      }
+      return { ...item, isVeg: item.isVeg !== undefined ? item.isVeg : true };
+    });
+    localStorage.setItem(STREET_ITEMS_STORAGE_KEY, JSON.stringify(streetItems));
+
+    let cart = [];
+    let paymentMode = 'upi';
+    let tokenCounter = parseInt(localStorage.getItem('menu99_street_token_seq')) || 101;
+    let orders = JSON.parse(localStorage.getItem('menu99_street_orders')) || [];
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('block'));
+
+      const target = document.getElementById('view-' + tabId);
+      if (target) {
+        target.classList.remove('hidden');
+        target.classList.add('block');
+      }
+
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('bg-brand-orange', 'text-white');
+        btn.classList.add('text-white/70', 'hover:bg-white/5');
+      });
+      const activeBtn = document.getElementById('tab-btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-orange', 'text-white');
+        activeBtn.classList.remove('text-white/70', 'hover:bg-white/5');
+      }
+
+      document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+        btn.classList.remove('text-brand-orange');
+        btn.classList.add('text-white/50');
+      });
+      const activeMBtn = document.getElementById('m-tab-' + tabId);
+      if (activeMBtn) {
+        activeMBtn.classList.add('text-brand-orange');
+        activeMBtn.classList.remove('text-white/50');
+      }
+
+      if (tabId === 'tokens') renderTokens();
+      if (tabId === 'hisab') renderHisab();
+      if (tabId === 'menu') renderStockManager();
+    }
+
+    let currentCat = 'all';
+    function filterCategory(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        if (pill.dataset.cat === cat) {
+          pill.classList.add('bg-brand-orange', 'text-white');
+          pill.classList.remove('bg-brand-surface', 'text-white/80');
+        } else {
+          pill.classList.remove('bg-brand-orange', 'text-white');
+          pill.classList.add('bg-brand-surface', 'text-white/80');
+        }
+      });
+      renderPOSGrid();
+    }
+
+    // Render POS Grid Items with Professional Images & Veg / Non-Veg Badges
+    function renderPOSGrid() {
+      const grid = document.getElementById('pos-items-grid');
+      if (!grid) return;
+
+      const filtered = streetItems.filter(item => {
+        if (currentCat === 'all') return true;
+        if (currentCat === 'veg') return item.isVeg !== false;
+        if (currentCat === 'nonveg') return item.isVeg === false;
+        return item.category === currentCat;
+      });
+
+      grid.innerHTML = filtered.map(item => {
+        const cartEntry = cart.find(c => c.id === item.id);
+        const qty = cartEntry ? cartEntry.qty : 0;
+        const disabled = !item.inStock;
+
+        return `
+          <div 
+            onclick="${disabled ? '' : `addToCart('${item.id}')`}"
+            class="group relative rounded-2xl p-2.5 sm:p-3 border transition-all select-none cursor-pointer flex flex-col justify-between overflow-hidden ${
+              disabled 
+                ? 'opacity-40 bg-brand-surface/40 border-brand-border cursor-not-allowed' 
+                : qty > 0 
+                  ? 'bg-brand-surface border-brand-orange shadow-md shadow-brand-orange/20' 
+                  : 'bg-brand-surface border-brand-border hover:border-brand-border/80 hover:bg-brand-surfaceHover active:scale-95'
+            }"
+          >
+            <div>
+              <!-- Food Photography Image -->
+              <div class="relative w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 bg-black/40">
+                <img 
+                  src="${item.image}" 
+                  alt="${item.name}" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                >
+                <!-- Veg / Non-Veg Indicator Badge on Image -->
+                <span class="absolute top-2 left-2 p-1 rounded-md bg-black/80 backdrop-blur-sm border border-white/10 flex items-center justify-center shadow">
+                  ${getDietBadge(item.isVeg)}
+                </span>
+                ${qty > 0 ? `<span class="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-brand-orange text-white font-extrabold text-xs shadow-md">x${qty}</span>` : ''}
+                ${disabled ? `<span class="absolute inset-0 bg-black/70 flex items-center justify-center text-red-400 text-xs font-bold">SOLD OUT</span>` : ''}
+              </div>
+
+              <!-- Item Title -->
+              <h4 class="font-bold text-xs sm:text-sm text-white leading-snug line-clamp-2">${item.name}</h4>
+            </div>
+
+            <div class="mt-2.5 pt-2 border-t border-brand-border/60 flex items-center justify-between">
+              <span class="text-sm sm:text-base font-extrabold text-brand-orange">₹${item.price}</span>
+              ${!disabled ? `
+                <button class="w-6 h-6 rounded-lg bg-white/10 hover:bg-brand-orange text-white flex items-center justify-center font-bold text-xs transition">
+                  +
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function addToCart(itemId) {
+      const item = streetItems.find(i => i.id === itemId);
+      if (!item || !item.inStock) return;
+
+      const existing = cart.find(c => c.id === itemId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ 
+          id: item.id, 
+          name: item.name, 
+          price: item.price, 
+          image: item.image, 
+          isVeg: item.isVeg, 
+          qty: 1 
+        });
+      }
+
+      playBeep(980, 0.08);
+      updateCartUI();
+      renderPOSGrid();
+    }
+
+    function changeQty(itemId, delta) {
+      const existing = cart.find(c => c.id === itemId);
+      if (!existing) return;
+
+      existing.qty += delta;
+      if (existing.qty <= 0) {
+        cart = cart.filter(c => c.id !== itemId);
+      }
+      updateCartUI();
+      renderPOSGrid();
+    }
+
+    function clearCart() {
+      cart = [];
+      updateCartUI();
+      renderPOSGrid();
+    }
+
+    function updateCartUI() {
+      const container = document.getElementById('cart-items-container');
+      const totalAmtEl = document.getElementById('cart-total-amount');
+      const countEl = document.getElementById('cart-item-count');
+      const punchBtn = document.getElementById('btn-punch-order');
+
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+      countEl.textContent = `${totalItems} items`;
+      totalAmtEl.textContent = totalPrice;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-32 flex flex-col items-center justify-center text-center text-white/40">
+            <svg class="w-8 h-8 mb-2 text-white/20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <p class="text-xs font-semibold">No items selected.</p>
+            <p class="text-[11px] text-white/30">Tap any food item to start billing</p>
+          </div>
+        `;
+        punchBtn.disabled = true;
+        punchBtn.classList.add('opacity-40', 'cursor-not-allowed');
+      } else {
+        container.innerHTML = cart.map(item => `
+          <div class="flex items-center justify-between p-2 rounded-xl bg-brand-dark/70 border border-brand-border/60">
+            <div class="flex items-center gap-2.5 min-w-0 pr-2">
+              <div class="relative shrink-0">
+                <img src="${item.image}" alt="${item.name}" class="w-10 h-10 rounded-lg object-cover">
+                <span class="absolute -top-1 -left-1 p-0.5 rounded bg-black/90">
+                  ${getDietBadge(item.isVeg)}
+                </span>
+              </div>
+              <div class="truncate">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold text-white block truncate">${item.name}</span>
+                </div>
+                <span class="text-[11px] text-brand-orange font-semibold">₹${item.price} each</span>
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-xs">-</button>
+              <span class="text-xs font-extrabold text-white w-4 text-center">${item.qty}</span>
+              <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center font-bold text-xs">+</button>
+            </div>
+          </div>
+        `).join('');
+
+        punchBtn.disabled = false;
+        punchBtn.classList.remove('opacity-40', 'cursor-not-allowed');
+      }
+    }
+
+    function setPaymentMode(mode) {
+      paymentMode = mode;
+      const upiBtn = document.getElementById('pay-mode-upi');
+      const cashBtn = document.getElementById('pay-mode-cash');
+
+      if (mode === 'upi') {
+        upiBtn.classList.add('border-brand-orange', 'bg-brand-orange/15');
+        upiBtn.classList.remove('border-white/10', 'bg-white/5');
+        cashBtn.classList.remove('border-brand-orange', 'bg-brand-orange/15');
+        cashBtn.classList.add('border-white/10', 'bg-white/5');
+      } else {
+        cashBtn.classList.add('border-brand-orange', 'bg-brand-orange/15');
+        cashBtn.classList.remove('border-white/10', 'bg-white/5');
+        upiBtn.classList.remove('border-brand-orange', 'bg-brand-orange/15');
+        upiBtn.classList.add('border-white/10', 'bg-white/5');
+      }
+    }
+
+    function punchOrder() {
+      if (cart.length === 0) return;
+
+      const currentToken = `#${tokenCounter}`;
+      const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const note = document.getElementById('order-customer-note').value.trim();
+
+      const newOrder = {
+        id: 'ord_' + Date.now(),
+        token: currentToken,
+        items: [...cart],
+        amount: totalAmount,
+        paymentMode: paymentMode,
+        note: note,
+        status: 'preparing',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toISOString()
+      };
+
+      orders.unshift(newOrder);
+      tokenCounter += 1;
+
+      localStorage.setItem('menu99_street_orders', JSON.stringify(orders));
+      localStorage.setItem('menu99_street_token_seq', tokenCounter.toString());
+
+      playBeep(1200, 0.2);
+
+      document.getElementById('modal-token-num').textContent = currentToken;
+      document.getElementById('modal-pay-mode').textContent = paymentMode.toUpperCase();
+      document.getElementById('modal-total-amt').textContent = `₹${totalAmount}`;
+      document.getElementById('token-modal').classList.remove('hidden');
+
+      clearCart();
+      document.getElementById('order-customer-note').value = '';
+
+      updateActiveTokenBadges();
+    }
+
+    function closeTokenModal() {
+      document.getElementById('token-modal').classList.add('hidden');
+    }
+
+    function renderTokens() {
+      const listPrep = document.getElementById('list-preparing');
+      const listReady = document.getElementById('list-ready');
+      const listComp = document.getElementById('list-completed');
+
+      const preparingOrders = orders.filter(o => o.status === 'preparing');
+      const readyOrders = orders.filter(o => o.status === 'ready');
+      const completedOrders = orders.filter(o => o.status === 'completed');
+
+      document.getElementById('count-preparing').textContent = preparingOrders.length;
+      document.getElementById('count-ready').textContent = readyOrders.length;
+      document.getElementById('count-completed').textContent = completedOrders.length;
+
+      listPrep.innerHTML = preparingOrders.length === 0 ? '<p class="text-xs text-white/30 text-center py-8">No orders in kitchen</p>' : preparingOrders.map(o => `
+        <div class="p-3 rounded-xl bg-brand-surface border border-amber-500/30">
+          <div class="flex items-start justify-between">
+            <span class="text-xl font-extrabold text-amber-400 font-serif">${o.token}</span>
+            <span class="text-[11px] text-white/40">${o.timestamp}</span>
+          </div>
+          <p class="text-xs text-white/80 mt-1 font-medium">${o.items.map(i => `${i.qty}x ${i.name}`).join(', ')}</p>
+          ${o.note ? `<p class="text-[10px] text-amber-300/80 mt-1 italic">Note: ${o.note}</p>` : ''}
+          <div class="mt-3 flex items-center justify-between border-t border-brand-border pt-2">
+            <span class="text-xs font-bold text-white">₹${o.amount} (${o.paymentMode.toUpperCase()})</span>
+            <button onclick="updateOrderStatus('${o.id}', 'ready')" class="px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs transition">
+              Mark Ready
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      listReady.innerHTML = readyOrders.length === 0 ? '<p class="text-xs text-white/30 text-center py-8">No orders ready</p>' : readyOrders.map(o => `
+        <div class="p-3 rounded-xl bg-brand-surface border-2 border-emerald-500/50 token-pulse">
+          <div class="flex items-start justify-between">
+            <span class="text-2xl font-black text-emerald-400 font-serif">${o.token}</span>
+            <span class="text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full">CALL NOW</span>
+          </div>
+          <p class="text-xs text-white/80 mt-1">${o.items.map(i => `${i.qty}x ${i.name}`).join(', ')}</p>
+          <div class="mt-3 flex items-center justify-between border-t border-brand-border pt-2">
+            <span class="text-xs font-bold text-white">₹${o.amount}</span>
+            <button onclick="updateOrderStatus('${o.id}', 'completed')" class="px-3 py-1 rounded-lg bg-brand-orange text-white font-bold text-xs transition">
+              Mark Handed Over
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      listComp.innerHTML = completedOrders.length === 0 ? '<p class="text-xs text-white/30 text-center py-8">No completed orders</p>' : completedOrders.slice(0, 8).map(o => `
+        <div class="p-2.5 rounded-xl bg-brand-dark/50 border border-brand-border/60 opacity-60">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-sm text-white">${o.token}</span>
+            <span class="text-xs text-emerald-400">₹${o.amount}</span>
+          </div>
+          <span class="text-[11px] text-white/40 block truncate mt-0.5">${o.items.map(i => `${i.qty}x ${i.name}`).join(', ')}</span>
+        </div>
+      `).join('');
+
+      updateActiveTokenBadges();
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+      const order = orders.find(o => o.id === orderId);
+      if (order) {
+        order.status = newStatus;
+        localStorage.setItem('menu99_street_orders', JSON.stringify(orders));
+        if (newStatus === 'ready') playBeep(1400, 0.3);
+        renderTokens();
+      }
+    }
+
+    function clearCompletedTokens() {
+      orders = orders.filter(o => o.status !== 'completed');
+      localStorage.setItem('menu99_street_orders', JSON.stringify(orders));
+      renderTokens();
+    }
+
+    function updateActiveTokenBadges() {
+      const activeCount = orders.filter(o => o.status === 'preparing' || o.status === 'ready').length;
+      document.getElementById('header-active-tokens').textContent = activeCount;
+      document.getElementById('tab-token-count').textContent = activeCount;
+
+      const mBadge = document.getElementById('m-token-badge');
+      if (mBadge) {
+        if (activeCount > 0) mBadge.classList.remove('hidden');
+        else mBadge.classList.add('hidden');
+      }
+    }
+
+    function renderHisab() {
+      const totalSale = orders.reduce((sum, o) => sum + o.amount, 0);
+      const upiOrders = orders.filter(o => o.paymentMode === 'upi');
+      const cashOrders = orders.filter(o => o.paymentMode === 'cash');
+
+      const upiSale = upiOrders.reduce((sum, o) => sum + o.amount, 0);
+      const cashSale = cashOrders.reduce((sum, o) => sum + o.amount, 0);
+
+      document.getElementById('hisab-total-sale').textContent = totalSale.toLocaleString();
+      document.getElementById('hisab-upi-sale').textContent = upiSale.toLocaleString();
+      document.getElementById('hisab-cash-sale').textContent = cashSale.toLocaleString();
+      document.getElementById('hisab-total-tokens').textContent = orders.length;
+
+      document.getElementById('hisab-upi-orders').textContent = `${upiOrders.length} transactions`;
+      document.getElementById('hisab-cash-orders').textContent = `${cashOrders.length} transactions`;
+
+      const tbody = document.getElementById('hisab-orders-table');
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-white/30">No transactions recorded yet today.</td></tr>`;
+      } else {
+        tbody.innerHTML = orders.map(o => `
+          <tr class="hover:bg-white/5 transition">
+            <td class="py-3 font-bold text-white">${o.token}</td>
+            <td class="py-3 text-white/50">${o.timestamp}</td>
+            <td class="py-3 text-white/80 max-w-xs truncate">${o.items.map(i => `${i.qty}x ${i.name}`).join(', ')}</td>
+            <td class="py-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${o.paymentMode === 'upi' ? 'bg-brand-orange/20 text-brand-orange' : 'bg-emerald-500/20 text-emerald-400'}">
+                ${o.paymentMode.toUpperCase()}
+              </span>
+            </td>
+            <td class="py-3 font-extrabold text-white text-right">₹${o.amount}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function renderStockManager() {
+      const list = document.getElementById('stock-items-list');
+      if (!list) return;
+
+      list.innerHTML = streetItems.map(item => `
+        <div class="p-3 rounded-2xl bg-brand-dark/80 border border-brand-border flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="relative shrink-0">
+              <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover">
+              <span class="absolute -top-1.5 -left-1.5 p-0.5 rounded bg-black/90">
+                ${getDietBadge(item.isVeg)}
+              </span>
+            </div>
+            <div class="truncate">
+              <div class="flex items-center gap-1.5">
+                <span class="text-xs sm:text-sm font-bold text-white block truncate">${item.name}</span>
+              </div>
+              <span class="text-xs text-brand-orange font-semibold">₹${item.price}</span>
+            </div>
+          </div>
+
+          <button 
+            onclick="toggleStock('${item.id}')"
+            class="px-3 py-1.5 rounded-full text-xs font-bold transition shrink-0 ${
+              item.inStock 
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-red-500/20 hover:text-red-400' 
+                : 'bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-emerald-500/20 hover:text-emerald-400'
+            }"
+          >
+            ${item.inStock ? 'In Stock ✓' : 'Sold Out ✕'}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function toggleStock(itemId) {
+      const item = streetItems.find(i => i.id === itemId);
+      if (item) {
+        item.inStock = !item.inStock;
+        localStorage.setItem(STREET_ITEMS_STORAGE_KEY, JSON.stringify(streetItems));
+        renderStockManager();
+        renderPOSGrid();
+      }
+    }
+
+    function addNewCustomItemModal() {
+      const name = prompt("Enter Street Food Item Name (e.g., Cheese Corn Bhel):");
+      if (!name) return;
+      const price = parseInt(prompt("Enter Price in ₹ (e.g., 50):"));
+      if (!price) return;
+      const isVegChoice = confirm("Is this item Pure Veg? (Click OK for Veg, Cancel for Non-Veg)");
+
+      const newItem = {
+        id: 'custom_' + Date.now(),
+        name: name,
+        category: 'snacks',
+        price: price,
+        isVeg: isVegChoice,
+        image: isVegChoice 
+          ? 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=400&q=80'
+          : 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=400&q=80',
+        inStock: true
+      };
+
+      streetItems.push(newItem);
+      localStorage.setItem(STREET_ITEMS_STORAGE_KEY, JSON.stringify(streetItems));
+      renderStockManager();
+      renderPOSGrid();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPOSGrid();
+      updateActiveTokenBadges();
+
+      // Read registered merchant outlet info
+      try {
+        const logged = JSON.parse(localStorage.getItem('menu99_logged_merchant') || '{}');
+        if (logged && logged.outletName) {
+          const headerName = document.getElementById('header-outlet-name');
+          const qrBadge = document.getElementById('qr-badge-name');
+          const qrStandee = document.getElementById('qr-standee-name');
+          const qrFooter = document.getElementById('qr-footer-upi');
+          if (headerName) headerName.textContent = logged.outletName;
+          if (qrBadge) qrBadge.textContent = `${logged.outletName} • Self-Service QR`;
+          if (qrStandee) qrStandee.textContent = `${logged.outletName} Standee`;
+          if (qrFooter && logged.upiId) qrFooter.textContent = `UPI: ${logged.upiId}`;
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>
